@@ -63,7 +63,7 @@ public class GlowPadView extends View {
     private static final int STATE_SNAP = 4;
     private static final int STATE_FINISH = 5;
 
-
+    //Lockscreen targets
     /**
      * @hide
      */
@@ -80,7 +80,19 @@ public class GlowPadView extends View {
     public final static String ICON_FILE = "icon_file";
 
     /**
-     *
+     * Number of customizable lockscreen targets for tablets
+     * @hide
+     */
+    public final static int MAX_TABLET_TARGETS = 7;
+
+    /**
+     * Number of customizable lockscreen targets for phones
+     * @hide
+     */
+    public final static int MAX_PHONE_TARGETS = 4;
+
+    /**
+     * Empty target used to reference unused lockscreen targets
      * @hide
      */
     public final static String EMPTY_TARGET = "empty";
@@ -94,7 +106,6 @@ public class GlowPadView extends View {
         public void onGrabbed(View v, int handle);
         public void onReleased(View v, int handle);
         public void onTrigger(View v, int target);
-        public void onTargetChange(View v, int target);
         public void onGrabbedStateChange(View v, int handle);
         public void onFinishFinalAnimation();
     }
@@ -462,9 +473,6 @@ public class GlowPadView extends View {
             target.setState(TargetDrawable.STATE_INACTIVE);
         }
         mActiveTarget = -1;
-        if (mOnTriggerListener != null) {
-            mOnTriggerListener.onTargetChange(this, mActiveTarget);
-        }
     }
 
     /**
@@ -991,9 +999,6 @@ public class GlowPadView extends View {
             }
         }
         mActiveTarget = activeTarget;
-        if (mOnTriggerListener !=null) {
-            mOnTriggerListener.onTargetChange(this, mActiveTarget);
-        }
     }
 
     @Override

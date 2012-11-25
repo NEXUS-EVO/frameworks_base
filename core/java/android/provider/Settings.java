@@ -2929,6 +2929,12 @@ public final class Settings {
          * @hide
          */
         public static final String POWER_MENU_SILENT_ENABLED = "power_menu_silent_enabled";
+        /**
+         * enabled and order of quick toggles
+         * 
+         * @hide
+         */
+        public static final String QUICK_TOGGLES = "quick_toggles";
 
        /**
         * Lefty mode

@@ -3084,6 +3084,12 @@ public final class Settings {
         };
 
         /**
+         * number of tiles per row in quick settings
+         *
+         * @hide
+         */
+        public static final String QUICK_TOGGLES_PER_ROW = "quick_toggles_per_row";
+
          * Settings to backup. This is here so that it's in the same place as the settings
          * keys and easy to update.
          *

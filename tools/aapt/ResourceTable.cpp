@@ -1,6 +1,6 @@
 //
 // Copyright 2006 The Android Open Source Project
-// This code has been modified.  Portions copyright (C) 2010, T-Mobile USA, Inc.
+// This code has been modified. Portions copyright (C) 2010, T-Mobile USA, Inc.
 //
 // Build resource files from raw assets.
 //
@@ -52,7 +52,7 @@ status_t compileXmlFile(const sp<AaptAssets>& assets,
 {
     if ((options&XML_COMPILE_STRIP_WHITESPACE) != 0) {
         root->removeWhitespace(true, NULL);
-    } else  if ((options&XML_COMPILE_COMPACT_WHITESPACE) != 0) {
+    } else if ((options&XML_COMPILE_COMPACT_WHITESPACE) != 0) {
         root->removeWhitespace(false, NULL);
     }
 
@@ -291,7 +291,7 @@ struct PendingAttribute
         }
         outTable->appendComment(myPackage, attr16, ident, comment, appendComment);
         //printf("Attribute %s comment: %s\n", String8(ident).string(),
-        //     String8(comment).string());
+        // String8(comment).string());
         return err;
     }
 };
@@ -611,9 +611,9 @@ status_t parseAndAddBag(Bundle* bundle,
 }
 
 /*
- * Returns true if needle is one of the elements in the comma-separated list
- * haystack, false otherwise.
- */
+* Returns true if needle is one of the elements in the comma-separated list
+* haystack, false otherwise.
+*/
 bool isInProductList(const String16& needle, const String16& haystack) {
     const char16_t *needle2 = needle.string();
     const char16_t *haystack2 = haystack.string();
@@ -661,15 +661,15 @@ status_t parseAndAddEntry(Bundle* bundle,
                             curTag, &str, curIsStyled ? &spans : NULL,
                             isFormatted, pseudolocalize);
 
-    if (err < NO_ERROR) { 
+    if (err < NO_ERROR) {
         return err;
     }
 
     /*
-     * If a product type was specified on the command line
-     * and also in the string, and the two are not the same,
-     * return without adding the string.
-     */
+* If a product type was specified on the command line
+* and also in the string, and the two are not the same,
+* return without adding the string.
+*/
 
     const char *bundleProduct = bundle->getProduct();
     if (bundleProduct == NULL) {
@@ -678,10 +678,10 @@ status_t parseAndAddEntry(Bundle* bundle,
 
     if (product.size() != 0) {
         /*
-         * If the command-line-specified product is empty, only "default"
-         * matches.  Other variants are skipped.  This is so generation
-         * of the R.java file when the product is not known is predictable.
-         */
+* If the command-line-specified product is empty, only "default"
+* matches. Other variants are skipped. This is so generation
+* of the R.java file when the product is not known is predictable.
+*/
 
         if (bundleProduct[0] == '\0') {
             if (strcmp16(String16("default").string(), product.string()) != 0) {
@@ -689,11 +689,11 @@ status_t parseAndAddEntry(Bundle* bundle,
             }
         } else {
             /*
-             * The command-line product is not empty.
-             * If the product for this string is on the command-line list,
-             * it matches.  "default" also matches, but only if nothing
-             * else has matched already.
-             */
+* The command-line product is not empty.
+* If the product for this string is on the command-line list,
+* it matches. "default" also matches, but only if nothing
+* else has matched already.
+*/
 
             if (isInProductList(product, String16(bundleProduct))) {
                 ;
@@ -1208,7 +1208,7 @@ status_t compileResourceFile(Bundle* bundle,
                             symbols->addSymbol(String8(itemIdent), 0, srcPos);
                             symbols->appendComment(String8(itemIdent), comment, srcPos);
                             //printf("Attribute %s comment: %s\n", String8(itemIdent).string(),
-                            //     String8(comment).string());
+                            // String8(comment).string());
                         }
                     } else if (code == ResXMLTree::END_TAG) {
                         if (strcmp16(block.getElementName(&len), declare_styleable16.string()) == 0) {
@@ -1524,7 +1524,7 @@ status_t compileResourceFile(Bundle* bundle,
                                         curIsFormatted, product, true, overwrite, outTable);
 #endif
                             }
-                        } 
+                        }
                         if (err != NO_ERROR) {
                             hasErrors = localHasErrors = true;
                         }
@@ -1567,11 +1567,11 @@ status_t compileResourceFile(Bundle* bundle,
             }
 
 #if 0
-            if (comment.size() > 0) {
-                printf("Comment for @%s:%s/%s: %s\n", String8(myPackage).string(),
-                       String8(curType).string(), String8(ident).string(),
-                       String8(comment).string());
-            }
+if (comment.size() > 0) {
+printf("Comment for @%s:%s/%s: %s\n", String8(myPackage).string(),
+String8(curType).string(), String8(ident).string(),
+String8(comment).string());
+}
 #endif
             if (!localHasErrors) {
                 outTable->appendComment(myPackage, curType, ident, comment, false);
@@ -1706,8 +1706,8 @@ status_t ResourceTable::addEntry(const SourcePos& sourcePos,
                                  const int32_t format,
                                  const bool overwrite)
 {
-    // Check for adding entries in other packages...  for now we do
-    // nothing.  We need to do the right thing here to support skinning.
+    // Check for adding entries in other packages... for now we do
+    // nothing. We need to do the right thing here to support skinning.
     uint32_t rid = mAssets->getIncludedResources()
         .identifierForName(name.string(), name.size(),
                            type.string(), type.size(),
@@ -1717,11 +1717,11 @@ status_t ResourceTable::addEntry(const SourcePos& sourcePos,
     }
     
 #if 0
-    if (name == String16("left")) {
-        printf("Adding entry left: file=%s, line=%d, type=%s, value=%s\n",
-               sourcePos.file.string(), sourcePos.line, String8(type).string(),
-               String8(value).string());
-    }
+if (name == String16("left")) {
+printf("Adding entry left: file=%s, line=%d, type=%s, value=%s\n",
+sourcePos.file.string(), sourcePos.line, String8(type).string(),
+String8(value).string());
+}
 #endif
 
     sp<Entry> e = getEntry(package, type, name, sourcePos, overwrite,
@@ -1747,8 +1747,8 @@ status_t ResourceTable::startBag(const SourcePos& sourcePos,
 {
     status_t result = NO_ERROR;
 
-    // Check for adding entries in other packages...  for now we do
-    // nothing.  We need to do the right thing here to support skinning.
+    // Check for adding entries in other packages... for now we do
+    // nothing. We need to do the right thing here to support skinning.
     uint32_t rid = mAssets->getIncludedResources()
     .identifierForName(name.string(), name.size(),
                        type.string(), type.size(),
@@ -1758,10 +1758,10 @@ status_t ResourceTable::startBag(const SourcePos& sourcePos,
     }
     
 #if 0
-    if (name == String16("left")) {
-        printf("Adding bag left: file=%s, line=%d, type=%s\n",
-               sourcePos.file.striing(), sourcePos.line, String8(type).string());
-    }
+if (name == String16("left")) {
+printf("Adding bag left: file=%s, line=%d, type=%s\n",
+sourcePos.file.striing(), sourcePos.line, String8(type).string());
+}
 #endif
     if (overlay && !mBundle->getAutoAddOverlay() && !hasBagOrEntry(package, type, name)) {
         bool canAdd = false;
@@ -1794,7 +1794,7 @@ status_t ResourceTable::startBag(const SourcePos& sourcePos,
         return result;
     }
 
-    if (overlay && replace) { 
+    if (overlay && replace) {
         return e->emptyBag(sourcePos);
     }
     return result;
@@ -1811,8 +1811,8 @@ status_t ResourceTable::addBag(const SourcePos& sourcePos,
                                const ResTable_config* params,
                                bool replace, bool isId, const int32_t format)
 {
-    // Check for adding entries in other packages...  for now we do
-    // nothing.  We need to do the right thing here to support skinning.
+    // Check for adding entries in other packages... for now we do
+    // nothing. We need to do the right thing here to support skinning.
     uint32_t rid = mAssets->getIncludedResources()
         .identifierForName(name.string(), name.size(),
                            type.string(), type.size(),
@@ -1822,10 +1822,10 @@ status_t ResourceTable::addBag(const SourcePos& sourcePos,
     }
 
 #if 0
-    if (name == String16("left")) {
-        printf("Adding bag left: file=%s, line=%d, type=%s\n",
-               sourcePos.file.striing(), sourcePos.line, String8(type).string());
-    }
+if (name == String16("left")) {
+printf("Adding bag left: file=%s, line=%d, type=%s\n",
+sourcePos.file.striing(), sourcePos.line, String8(type).string());
+}
 #endif
     sp<Entry> e = getEntry(package, type, name, sourcePos, replace, params);
     if (e == NULL) {
@@ -1862,7 +1862,7 @@ bool ResourceTable::hasBagOrEntry(const String16& package,
     if (p != NULL) {
         sp<Type> t = p->getTypes().valueFor(type);
         if (t != NULL) {
-            sp<ConfigList> c =  t->getConfigs().valueFor(name);
+            sp<ConfigList> c = t->getConfigs().valueFor(name);
             if (c != NULL) return true;
         }
     }
@@ -1888,7 +1888,7 @@ bool ResourceTable::hasBagOrEntry(const String16& package,
     if (p != NULL) {
         sp<Type> t = p->getTypes().valueFor(type);
         if (t != NULL) {
-            sp<ConfigList> c =  t->getConfigs().valueFor(name);
+            sp<ConfigList> c = t->getConfigs().valueFor(name);
             if (c != NULL) {
                 sp<Entry> e = c->getEntries().valueFor(config);
                 if (e != NULL) {
@@ -1927,7 +1927,7 @@ bool ResourceTable::appendComment(const String16& package,
     if (p != NULL) {
         sp<Type> t = p->getTypes().valueFor(type);
         if (t != NULL) {
-            sp<ConfigList> c =  t->getConfigs().valueFor(name);
+            sp<ConfigList> c = t->getConfigs().valueFor(name);
             if (c != NULL) {
                 c->appendComment(comment, onlyIfEmpty);
                 return true;
@@ -1950,7 +1950,7 @@ bool ResourceTable::appendTypeComment(const String16& package,
     if (p != NULL) {
         sp<Type> t = p->getTypes().valueFor(type);
         if (t != NULL) {
-            sp<ConfigList> c =  t->getConfigs().valueFor(name);
+            sp<ConfigList> c = t->getConfigs().valueFor(name);
             if (c != NULL) {
                 c->appendTypeComment(comment);
                 return true;
@@ -2001,7 +2001,7 @@ uint32_t ResourceTable::getResId(const String16& package,
                                  bool onlyPublic) const
 {
     uint32_t id = ResourceIdCache::lookup(package, type, name, onlyPublic);
-    if (id != 0) return id;     // cache hit
+    if (id != 0) return id; // cache hit
 
     sp<Package> p = mPackages.valueFor(package);
     if (p == NULL) return 0;
@@ -2029,7 +2029,7 @@ uint32_t ResourceTable::getResId(const String16& package,
 
     sp<Type> t = p->getTypes().valueFor(type);
     if (t == NULL) return 0;
-    sp<ConfigList> c =  t->getConfigs().valueFor(name);
+    sp<ConfigList> c = t->getConfigs().valueFor(name);
     if (c == NULL) return 0;
     int32_t ei = c->getEntryIndex();
     if (ei < 0) return 0;
@@ -2104,7 +2104,7 @@ bool ResourceTable::stringToValue(Res_value* outValue, StringPool* pool,
 
     bool res = true;
     if (style == NULL || style->size() == 0) {
-        // Text is not styled so it can be any type...  let's figure it out.
+        // Text is not styled so it can be any type... let's figure it out.
         res = mAssets->getIncludedResources()
             .stringToValue(outValue, &finalStr, str.string(), str.size(), preserveSpaces,
                             coerceType, attrID, NULL, &mAssetsPackage, this,
@@ -2158,12 +2158,12 @@ uint32_t ResourceTable::getCustomResource(
     const String16& package, const String16& type, const String16& name) const
 {
     //printf("getCustomResource: %s %s %s\n", String8(package).string(),
-    //       String8(type).string(), String8(name).string());
+    // String8(type).string(), String8(name).string());
     sp<Package> p = mPackages.valueFor(package);
     if (p == NULL) return 0;
     sp<Type> t = p->getTypes().valueFor(type);
     if (t == NULL) return 0;
-    sp<ConfigList> c =  t->getConfigs().valueFor(name);
+    sp<ConfigList> c = t->getConfigs().valueFor(name);
     if (c == NULL) return 0;
     int32_t ei = c->getEntryIndex();
     if (ei < 0) return 0;
@@ -2199,7 +2199,7 @@ bool ResourceTable::getAttributeType(uint32_t attrID, uint32_t* outType)
     Res_value value;
     if (getItemValue(attrID, ResTable_map::ATTR_TYPE, &value)) {
         //printf("getAttributeType #%08x (%s): #%08x\n", attrID,
-        //       String8(getEntry(attrID)->getName()).string(), value.data);
+        // String8(getEntry(attrID)->getName()).string(), value.data);
         *outType = value.data;
         return true;
     }
@@ -2286,7 +2286,7 @@ bool ResourceTable::getAttributeEnum(
         const size_t N = e->getBag().size();
         for (size_t i=0; i<N; i++) {
             //printf("Comparing %s to %s\n", String8(name, nameLen).string(),
-            //       String8(e->getBag().keyAt(i)).string());
+            // String8(e->getBag().keyAt(i)).string());
             if (e->getBag().keyAt(i) == nameStr) {
                 return getItemValue(attrID, e->getBag().valueAt(i).bagKeyId, outValue);
             }
@@ -2320,7 +2320,7 @@ bool ResourceTable::getAttributeFlags(
             size_t i;
             for (i=0; i<N; i++) {
                 //printf("Comparing \"%s\" to \"%s\"\n", String8(nameStr).string(),
-                //       String8(e->getBag().keyAt(i)).string());
+                // String8(e->getBag().keyAt(i)).string());
                 if (e->getBag().keyAt(i) == nameStr) {
                     Res_value val;
                     bool got = getItemValue(attrID, e->getBag().valueAt(i).bagKeyId, &val);
@@ -2485,13 +2485,13 @@ status_t ResourceTable::addSymbols(const sp<AaptSymbols>& outSymbols) {
                     String16 comment(c->getComment());
                     typeSymbols->appendComment(String8(c->getName()), comment, c->getPos());
                     //printf("Type symbol %s comment: %s\n", String8(e->getName()).string(),
-                    //     String8(comment).string());
+                    // String8(comment).string());
                     comment = c->getTypeComment();
                     typeSymbols->appendTypeComment(String8(c->getName()), comment);
                 } else {
 #if 0
-                    printf("**** NO MATCH: 0x%08x vs 0x%08x\n",
-                           Res_GETPACKAGE(rid), p->getAssignedId());
+printf("**** NO MATCH: 0x%08x vs 0x%08x\n",
+Res_GETPACKAGE(rid), p->getAssignedId());
 #endif
                 }
             }
@@ -2509,14 +2509,14 @@ ResourceTable::addLocalization(const String16& name, const String8& locale)
 
 
 /*!
- * Flag various sorts of localization problems.  '+' indicates checks already implemented;
- * '-' indicates checks that will be implemented in the future.
- *
- * + A localized string for which no default-locale version exists => warning
- * + A string for which no version in an explicitly-requested locale exists => warning
- * + A localized translation of an translateable="false" string => warning
- * - A localized string not provided in every locale used by the table
- */
+* Flag various sorts of localization problems. '+' indicates checks already implemented;
+* '-' indicates checks that will be implemented in the future.
+*
+* + A localized string for which no default-locale version exists => warning
+* + A string for which no version in an explicitly-requested locale exists => warning
+* + A localized translation of an translateable="false" string => warning
+* - A localized string not provided in every locale used by the table
+*/
 status_t
 ResourceTable::validateLocalizations(void)
 {
@@ -2527,8 +2527,9 @@ ResourceTable::validateLocalizations(void)
     for (map<String16, set<String8> >::iterator nameIter = mLocalizations.begin();
          nameIter != mLocalizations.end();
          nameIter++) {
-        const set<String8>& configSet = nameIter->second;   // naming convenience
+        const set<String8>& configSet = nameIter->second; // naming convenience
 
+#ifdef SHOW_DEFAULT_TRANSLATION_WARNINGS
         // Look for strings with no default localization
         if (configSet.count(defaultLocale) == 0) {
             fprintf(stdout, "aapt: warning: string '%s' has no default translation in %s; found:",
@@ -2541,7 +2542,8 @@ ResourceTable::validateLocalizations(void)
             fprintf(stdout, "\n");
             // !!! TODO: throw an error here in some circumstances
         }
-
+#endif
+#ifdef SHOW_LOCALIZATION_WARNINGS
         // Check that all requested localizations are present for this string
         if (mBundle->getConfigurations() != NULL && mBundle->getRequireLocalization()) {
             const char* allConfigs = mBundle->getConfigurations();
@@ -2561,7 +2563,7 @@ ResourceTable::validateLocalizations(void)
                 // don't bother with the pseudolocale "zz_ZZ"
                 if (config != "zz_ZZ") {
                     if (configSet.find(config) == configSet.end()) {
-                        // okay, no specific localization found.  it's possible that we are
+                        // okay, no specific localization found. it's possible that we are
                         // requiring a specific regional localization [e.g. de_DE] but there is an
                         // available string in the generic language localization [e.g. de];
                         // consider that string to have fulfilled the localization requirement.
@@ -2580,6 +2582,7 @@ ResourceTable::validateLocalizations(void)
                 }
            } while (comma != NULL);
         }
+#endif
     }
 
     return err;
@@ -2660,7 +2663,7 @@ status_t ResourceTable::flatten(Bundle* bundle, const sp<AaptFile>& dest)
                     e->setNameIndex(keyStrings.add(e->getName(), true));
 
                     // If this entry has no values for other configs,
-                    // and is the default config, then it is special.  Otherwise
+                    // and is the default config, then it is special. Otherwise
                     // we want to add it with the config info.
                     ConfigDescription* valueConfig = NULL;
                     if (N != 1 || config == nullConfig) {
@@ -2682,9 +2685,9 @@ status_t ResourceTable::flatten(Bundle* bundle, const sp<AaptFile>& dest)
     }
 
     if (bundle->getOutputAPKFile() != NULL) {
-        // Now we want to sort the value strings for better locality.  This will
+        // Now we want to sort the value strings for better locality. This will
         // cause the positions of the strings to change, so we need to go back
-        // through out resource entries and update them accordingly.  Only need
+        // through out resource entries and update them accordingly. Only need
         // to do this if actually writing the output file.
         valueStrings.sortByConfig();
         for (pi=0; pi<allEntries.size(); pi++) {
@@ -2989,7 +2992,7 @@ void ResourceTable::writePublicDefinitions(const String16& package, FILE* fp)
 {
     fprintf(fp,
     "<!-- This file contains <public> resource definitions for all\n"
-    "     resources that were generated from the source data. -->\n"
+    " resources that were generated from the source data. -->\n"
     "\n"
     "<resources>\n");
 
@@ -3033,11 +3036,11 @@ void ResourceTable::writePublicDefinitions(const String16& package, FILE* fp, bo
                 }
                 if (!didHeader) {
                     if (pub) {
-                        fprintf(fp,"  <!-- PUBLIC SECTION.  These resources have been declared public.\n");
-                        fprintf(fp,"       Changes to these definitions will break binary compatibility. -->\n\n");
+                        fprintf(fp," <!-- PUBLIC SECTION. These resources have been declared public.\n");
+                        fprintf(fp," Changes to these definitions will break binary compatibility. -->\n\n");
                     } else {
-                        fprintf(fp,"  <!-- PRIVATE SECTION.  These resources have not been declared public.\n");
-                        fprintf(fp,"       You can make them public my moving these lines into a file in res/values. -->\n\n");
+                        fprintf(fp," <!-- PRIVATE SECTION. These resources have not been declared public.\n");
+                        fprintf(fp," You can make them public my moving these lines into a file in res/values. -->\n\n");
                     }
                     didHeader = true;
                 }
@@ -3046,12 +3049,12 @@ void ResourceTable::writePublicDefinitions(const String16& package, FILE* fp, bo
                     for (size_t k=0; k<NE; k++) {
                         const SourcePos& pos = c->getEntries().valueAt(k)->getPos();
                         if (pos.file != "") {
-                            fprintf(fp,"  <!-- Declared at %s:%d -->\n",
+                            fprintf(fp," <!-- Declared at %s:%d -->\n",
                                     pos.file.string(), pos.line);
                         }
                     }
                 }
-                fprintf(fp, "  <public type=\"%s\" name=\"%s\" id=\"0x%08x\" />\n",
+                fprintf(fp, " <public type=\"%s\" name=\"%s\" id=\"0x%08x\" />\n",
                         String8(t->getName()).string(),
                         String8(c->getName()).string(),
                         getResId(pkg, t, c->getEntryIndex()));
@@ -3136,7 +3139,7 @@ status_t ResourceTable::Entry::addToBag(const SourcePos& sourcePos,
     Item item(sourcePos, isId, value, style, format);
     
     // XXX NOTE: there is an error if you try to have a bag with two keys,
-    // one an attr and one an id, with the same name.  Not something we
+    // one an attr and one an id, with the same name. Not something we
     // currently ever have to worry about.
     ssize_t origKey = mBag.indexOfKey(key);
     if (origKey >= 0) {
@@ -3149,7 +3152,7 @@ status_t ResourceTable::Entry::addToBag(const SourcePos& sourcePos,
             return UNKNOWN_ERROR;
         }
         //printf("Replacing %s with %s\n",
-        //       String8(mBag.valueFor(key).value).string(), String8(value).string());
+        // String8(mBag.valueFor(key).value).string(), String8(value).string());
         mBag.replaceValueFor(key, item);
     }
 
@@ -3189,12 +3192,12 @@ status_t ResourceTable::Entry::generateAttributes(ResourceTable* table,
         } else if (!table->hasBagOrEntry(key, &attr16, &package)) {
 
 #if 1
-//             fprintf(stderr, "ERROR: Bag attribute '%s' has not been defined.\n",
-//                     String8(key).string());
-//             const Item& item(mBag.valueAt(i));
-//             fprintf(stderr, "Referenced from file %s line %d\n",
-//                     item.sourcePos.file.string(), item.sourcePos.line);
-//             return UNKNOWN_ERROR;
+// fprintf(stderr, "ERROR: Bag attribute '%s' has not been defined.\n",
+// String8(key).string());
+// const Item& item(mBag.valueAt(i));
+// fprintf(stderr, "Referenced from file %s line %d\n",
+// item.sourcePos.file.string(), item.sourcePos.line);
+// return UNKNOWN_ERROR;
 #else
             char numberStr[16];
             sprintf(numberStr, "%d", ResTable_map::TYPE_ANY);
@@ -3335,10 +3338,10 @@ ssize_t ResourceTable::Entry::flatten(Bundle* bundle, const sp<AaptFile>& data, 
         par.res0 = it.parsedValue.res0;
         par.data = htodl(it.parsedValue.data);
         #if 0
-        printf("Writing item (%s): type=%d, data=0x%x, res0=0x%x\n",
-               String8(mName).string(), it.parsedValue.dataType,
-               it.parsedValue.data, par.res0);
-        #endif
+printf("Writing item (%s): type=%d, data=0x%x, res0=0x%x\n",
+String8(mName).string(), it.parsedValue.dataType,
+it.parsedValue.data, par.res0);
+#endif
         err = data->writeData(&par, it.parsedValue.size);
         if (err != NO_ERROR) {
             fprintf(stderr, "ERROR: out of memory creating Res_value\n");
@@ -3417,13 +3420,13 @@ status_t ResourceTable::Type::addPublic(const SourcePos& sourcePos,
                                         const uint32_t ident)
 {
     #if 0
-    int32_t entryIdx = Res_GETENTRY(ident);
-    if (entryIdx < 0) {
-        sourcePos.error("Public resource %s/%s has an invalid 0 identifier (0x%08x).\n",
-                String8(mName).string(), String8(name).string(), ident);
-        return UNKNOWN_ERROR;
-    }
-    #endif
+int32_t entryIdx = Res_GETENTRY(ident);
+if (entryIdx < 0) {
+sourcePos.error("Public resource %s/%s has an invalid 0 identifier (0x%08x).\n",
+String8(mName).string(), String8(name).string(), ident);
+return UNKNOWN_ERROR;
+}
+#endif
 
     int32_t typeIdx = Res_GETTYPE(ident);
     if (typeIdx >= 0) {
@@ -3523,21 +3526,21 @@ sp<ResourceTable::Entry> ResourceTable::Type::getEntry(const String16& entry,
         e = new Entry(entry, sourcePos);
         c->addEntry(cdesc, e);
         /*
-        if (doSetIndex) {
-            if (pos < 0) {
-                for (pos=0; pos<(int)mOrderedConfigs.size(); pos++) {
-                    if (mOrderedConfigs[pos] == c) {
-                        break;
-                    }
-                }
-                if (pos >= (int)mOrderedConfigs.size()) {
-                    sourcePos.error("Internal error: config not found in mOrderedConfigs when adding entry");
-                    return NULL;
-                }
-            }
-            e->setEntryIndex(pos);
-        }
-        */
+if (doSetIndex) {
+if (pos < 0) {
+for (pos=0; pos<(int)mOrderedConfigs.size(); pos++) {
+if (mOrderedConfigs[pos] == c) {
+break;
+}
+}
+if (pos >= (int)mOrderedConfigs.size()) {
+sourcePos.error("Internal error: config not found in mOrderedConfigs when adding entry");
+return NULL;
+}
+}
+e->setEntryIndex(pos);
+}
+*/
     }
     
     mUniqueConfigs.add(cdesc);
@@ -3564,7 +3567,7 @@ status_t ResourceTable::Type::applyPublicEntryOrder()
         const Public& p = mPublic.valueAt(j);
         int32_t idx = Res_GETENTRY(p.ident);
         //printf("Looking for entry \"%s\"/\"%s\" (0x%08x) in %d...\n",
-        //       String8(mName).string(), String8(name).string(), p.ident, N);
+        // String8(mName).string(), String8(name).string(), p.ident, N);
         bool found = false;
         for (i=0; i<N; i++) {
             sp<ConfigList> e = origOrder.itemAt(i);
@@ -3768,7 +3771,7 @@ sp<ResourceTable::Package> ResourceTable::getPackage(const String16& package)
             }
         }
         //printf("*** NEW PACKAGE: \"%s\" id=%d\n",
-        //       String8(package).string(), p->getAssignedId());
+        // String8(package).string(), p->getAssignedId());
         mPackages.add(package, p);
         mOrderedPackages.add(p);
         mNextPackageId++;

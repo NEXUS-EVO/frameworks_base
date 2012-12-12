@@ -2742,7 +2742,8 @@ public final class Settings {
          * 1: Display cm battery percentage implementation / dont show stock icon
          * 2: Display cm circle battery implementation without percentage
          * 3: Display cm circle battery implementation with percentage
-         * 4: Hide the battery information
+         * 4: Display cm cog battery 
+         * 5: Hide the battery information
          * default: 0
          * @hide
          */

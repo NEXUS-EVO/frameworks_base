@@ -53,12 +53,15 @@ public class BatteryController extends BroadcastReceiver {
      */
     public  static final int BATTERY_STYLE_CIRCLE         = 2;
     public  static final int BATTERY_STYLE_CIRCLE_PERCENT = 3;
-    private static final int BATTERY_STYLE_GONE           = 4;
+    private static final int BATTERY_STYLE_COG            = 4;
+    private static final int BATTERY_STYLE_GONE           = 5;
 
     private static final int BATTERY_ICON_STYLE_NORMAL      = R.drawable.stat_sys_battery;
     private static final int BATTERY_ICON_STYLE_CHARGE      = R.drawable.stat_sys_battery_charge;
     private static final int BATTERY_ICON_STYLE_NORMAL_MIN  = R.drawable.stat_sys_battery_min;
     private static final int BATTERY_ICON_STYLE_CHARGE_MIN  = R.drawable.stat_sys_battery_charge_min;
+    private static final int BATTERY_ICON_STYLE_COG         = R.drawable.stat_sys_battery_circle;
+    private static final int BATTERY_ICON_STYLE_COG_CHARGE  = R.drawable.stat_sys_battery_charge_circle;
 
     private static final int BATTERY_TEXT_STYLE_NORMAL  = R.string.status_bar_settings_battery_meter_format;
     private static final int BATTERY_TEXT_STYLE_MIN     = R.string.status_bar_settings_battery_meter_min_format;
@@ -66,6 +69,7 @@ public class BatteryController extends BroadcastReceiver {
     private boolean mBatteryPlugged = false;
     private int mBatteryStyle;
     private int mBatteryIcon = BATTERY_ICON_STYLE_NORMAL;
+    private int mBatteryIconStyle = BATTERY_ICON_STYLE_COG;
 
     Handler mHandler;
 
@@ -152,12 +156,16 @@ public class BatteryController extends BroadcastReceiver {
         if (mBatteryStyle == BATTERY_STYLE_NORMAL) {
             mIcon = (View.VISIBLE);
             mIconStyle = mBatteryPlugged ? BATTERY_ICON_STYLE_CHARGE
-                    : BATTERY_ICON_STYLE_NORMAL;
+                    : BATTERY_ICON_STYLE_NORMAL;            
         } else if (mBatteryStyle == BATTERY_STYLE_PERCENT) {
             mIcon = (View.VISIBLE);
             mText = (View.VISIBLE);
             mIconStyle = mBatteryPlugged ? BATTERY_ICON_STYLE_CHARGE_MIN
                     : BATTERY_ICON_STYLE_NORMAL_MIN;
+        } else if (mBatteryStyle == BATTERY_STYLE_COG) {
+			mIcon = (View.VISIBLE);
+            mIconStyle = mBatteryPlugged ? BATTERY_ICON_STYLE_COG_CHARGE
+                    : BATTERY_ICON_STYLE_COG;            
         }
 
         int N = mIconViews.size();

@@ -20,16 +20,11 @@ import java.util.ArrayList;
 
 import android.bluetooth.BluetoothAdapter.BluetoothStateChangeCallback;
 import android.content.BroadcastReceiver;
-import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.database.ContentObserver;
 import android.os.BatteryManager;
-import android.os.Handler;
-import android.provider.Settings;
 import android.util.Slog;
-import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -42,6 +37,8 @@ public class BatteryController extends BroadcastReceiver {
     private ArrayList<ImageView> mIconViews = new ArrayList<ImageView>();
     private ArrayList<TextView> mLabelViews = new ArrayList<TextView>();
 
+<<<<<<< HEAD
+=======
     private static final int BATTERY_STYLE_NORMAL         = 0;
     private static final int BATTERY_STYLE_PERCENT        = 1;
     /***
@@ -89,6 +86,7 @@ public class BatteryController extends BroadcastReceiver {
         }
     }
 
+>>>>>>> b5997d1ed770698affa948e3185882a3123b8f63
     private ArrayList<BatteryStateChangeCallback> mChangeCallbacks =
             new ArrayList<BatteryStateChangeCallback>();
 
@@ -98,12 +96,6 @@ public class BatteryController extends BroadcastReceiver {
 
     public BatteryController(Context context) {
         mContext = context;
-
-        mHandler = new Handler();
-
-        SettingsObserver settingsObserver = new SettingsObserver(mHandler);
-        settingsObserver.observe();
-        updateSettings();
 
         IntentFilter filter = new IntentFilter();
         filter.addAction(Intent.ACTION_BATTERY_CHANGED);
@@ -126,10 +118,13 @@ public class BatteryController extends BroadcastReceiver {
         final String action = intent.getAction();
         if (action.equals(Intent.ACTION_BATTERY_CHANGED)) {
             final int level = intent.getIntExtra(BatteryManager.EXTRA_LEVEL, 0);
-            mBatteryPlugged = intent.getIntExtra(BatteryManager.EXTRA_PLUGGED, 0) != 0;
+            final boolean plugged = intent.getIntExtra(BatteryManager.EXTRA_PLUGGED, 0) != 0;
+            final int icon = plugged ? R.drawable.stat_sys_battery_charge 
+                                     : R.drawable.stat_sys_battery;
             int N = mIconViews.size();
             for (int i=0; i<N; i++) {
                 ImageView v = mIconViews.get(i);
+                v.setImageResource(icon);
                 v.setImageLevel(level);
                 v.setContentDescription(mContext.getString(R.string.accessibility_battery_level,
                         level));
@@ -137,13 +132,15 @@ public class BatteryController extends BroadcastReceiver {
             N = mLabelViews.size();
             for (int i=0; i<N; i++) {
                 TextView v = mLabelViews.get(i);
-                v.setText(mContext.getString(BATTERY_TEXT_STYLE_MIN,
+                v.setText(mContext.getString(R.string.status_bar_settings_battery_meter_format,
                         level));
             }
 
             for (BatteryStateChangeCallback cb : mChangeCallbacks) {
-                cb.onBatteryLevelChanged(level, mBatteryPlugged);
+                cb.onBatteryLevelChanged(level, plugged);
             }
+<<<<<<< HEAD
+=======
             updateBattery();
         }
     }
@@ -166,26 +163,7 @@ public class BatteryController extends BroadcastReceiver {
 			mIcon = (View.VISIBLE);
             mIconStyle = mBatteryPlugged ? BATTERY_ICON_STYLE_COG_CHARGE
                     : BATTERY_ICON_STYLE_COG;            
+>>>>>>> b5997d1ed770698affa948e3185882a3123b8f63
         }
-
-        int N = mIconViews.size();
-        for (int i=0; i<N; i++) {
-            ImageView v = mIconViews.get(i);
-            v.setVisibility(mIcon);
-            v.setImageResource(mIconStyle);
-        }
-        N = mLabelViews.size();
-        for (int i=0; i<N; i++) {
-            TextView v = mLabelViews.get(i);
-            v.setVisibility(mText);
-        }
-    }
-
-    private void updateSettings() {
-        ContentResolver resolver = mContext.getContentResolver();
-
-        mBatteryStyle = (Settings.System.getInt(resolver,
-                Settings.System.STATUS_BAR_BATTERY, 0));
-        updateBattery();
     }
 }

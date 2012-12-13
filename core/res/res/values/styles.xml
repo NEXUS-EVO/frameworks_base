@@ -474,7 +474,7 @@ please see styles_device_defaults.xml.
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:textStyle">bold</item>
-        <item name="android:textColor">?textColorSecondary</item>
+        <item name="android:textColor">@android:color/holo_blue_light</item>
         <item name="android:textSize">14sp</item>
         <item name="android:gravity">center_vertical</item>
         <item name="android:paddingStart">8dip</item>
@@ -899,7 +899,7 @@ please see styles_device_defaults.xml.
      </style>
 
     <style name="TextAppearance.WindowTitle">
-        <item name="android:textColor">#fff</item>
+        <item name="android:textColor">@android:color/holo_blue_light</item>
         <item name="android:textSize">14sp</item>
         <item name="android:textStyle">bold</item>
     </style>
@@ -1406,7 +1406,7 @@ please see styles_device_defaults.xml.
     </style>
 
     <style name="TextAppearance.Holo.WindowTitle">
-        <item name="android:textColor">#fff</item>
+        <item name="android:textColor">@android:color/holo_blue_light</item>
         <item name="android:textSize">14sp</item>
         <item name="android:textStyle">bold</item>
     </style>

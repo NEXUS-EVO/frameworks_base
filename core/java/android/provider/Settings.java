@@ -2656,6 +2656,32 @@ public final class Settings {
         public static final String EXPANDED_HAPTIC_FEEDBACK = "expanded_haptic_feedback";
 
         /**
+         * Whether to show the battery bar
+         * @hide
+         */
+        public static final String STATUSBAR_BATTERY_BAR = "statusbar_battery_bar";
+
+        /**
+         * @hide
+         */
+        public static final String STATUSBAR_BATTERY_BAR_COLOR = "statusbar_battery_bar_color";
+
+        /**
+         * @hide
+         */
+        public static final String STATUSBAR_BATTERY_BAR_THICKNESS = "statusbar_battery_bar_thickness";
+
+        /**
+         * @hide
+         */
+        public static final String STATUSBAR_BATTERY_BAR_STYLE = "statusbar_battery_bar_style";
+
+        /**
+         * @hide
+         */
+        public static final String STATUSBAR_BATTERY_BAR_ANIMATE = "statusbar_battery_bar_animate";
+
+        /**
          * Notification Indicator Color
          *
          * @hide
@@ -2740,10 +2766,14 @@ public final class Settings {
          * Display style of the status bar battery information
          * 0: Display the stock battery information
          * 1: Display cm battery percentage implementation / dont show stock icon
+<<<<<<< HEAD
+         * 2: Hide the battery information
+=======
          * 2: Display cm circle battery implementation without percentage
          * 3: Display cm circle battery implementation with percentage
          * 4: Display cm cog battery 
          * 5: Hide the battery information
+>>>>>>> b5997d1ed770698affa948e3185882a3123b8f63
          * default: 0
          * @hide
          */
@@ -2811,7 +2841,7 @@ public final class Settings {
 
         /**
          * Boolean value whether to link ringtone and notification volumes
-         *
+         * 
          * @hide
          */
         public static final String VOLUME_LINK_NOTIFICATION = "volume_link_notification";
@@ -3111,10 +3141,66 @@ public final class Settings {
         public static final String HOME_UNLOCK_SCREEN = "home_unlock_screen";
 
         /**
+         * Style of Battery
+         * 0 - Icon Only
+         * 1 - Text Only
+         * 2 - Icon Text
+         * 3 - Icon Centered Text
+         * 4 - Icon Circle
+         * 5 - Hide
+         */
+        public static final String STATUSBAR_BATTERY_ICON = "statusbar_battery_icon";
+        /**
+         * AM/PM Style for clock options
+         * 0 - Normal AM/PM
+         * 1 - Small AM/PM
+         * 2 - No AM/PM
+         * @hide
+         */
+        public static final String STATUSBAR_CLOCK_AM_PM_STYLE = "statusbar_clock_am_pm_style";
+
+        /**
+         * Style of clock
+         * 0 - Hide Clock
+         * 1 - Right Clock
+         * 2 - Center Clock
+         * @hide
+         */
+        public static final String STATUSBAR_CLOCK_STYLE = "statusbar_clock_style";
+
+        /**
+         * Setting for clock color
+         * @hide
+         */
+        public static final String STATUSBAR_CLOCK_COLOR = "statusbar_clock_color";
+
+        /**
+         * Shows weekday before clock time
+         * 0 - No Day
+         * 1 - Small Day
+         * 2 - Normal Day
+         * @hide
+         */
+        public static final String STATUSBAR_CLOCK_WEEKDAY = "statusbar_clock_weekday";
+
+        /**
+         * Show the pending notification counts as overlays on the statusbar
+         * @hide
+         */
+        public static final String STATUSBAR_NOTIF_COUNT = "status_bar_notif_count";
+
+        /**
          * Whether the lockscreen vibrate should be enabled.
          * @hide
          */
         public static final String LOCKSCREEN_VIBRATE_ENABLED = "lockscreen.vibrate_enabled";
+
+        /**
+         * Holds the text for the Carrier label. An empty string
+         * will bring the default text back.
+         * @hide
+         */
+        public static final String CUSTOM_CARRIER_LABEL = "custom_carrier_label";
 
         /**
          * Settings to backup. This is here so that it's in the same place as the settings

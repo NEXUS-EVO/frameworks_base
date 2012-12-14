@@ -2763,23 +2763,6 @@ public final class Settings {
         public static final String STATUS_BAR_AM_PM = "status_bar_am_pm";
 
         /**
-         * Display style of the status bar battery information
-         * 0: Display the stock battery information
-         * 1: Display cm battery percentage implementation / dont show stock icon
-<<<<<<< HEAD
-         * 2: Hide the battery information
-=======
-         * 2: Display cm circle battery implementation without percentage
-         * 3: Display cm circle battery implementation with percentage
-         * 4: Display cm cog battery 
-         * 5: Hide the battery information
->>>>>>> b5997d1ed770698affa948e3185882a3123b8f63
-         * default: 0
-         * @hide
-         */
-        public static final String STATUS_BAR_BATTERY = "status_bar_battery";
-
-        /**
          * Whether to show the clock in status bar
          * of the stock battery icon
          * 0: don't show the clock

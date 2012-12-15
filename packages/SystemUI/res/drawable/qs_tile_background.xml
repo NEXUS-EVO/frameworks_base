@@ -21,6 +21,6 @@
 	<color android:color="#ff33b5e5" />
     </item>
     <item>
-        <color android:color="#ff0a0a0a" />
+        <color android:color="#ff050505" />
     </item>
 </selector>

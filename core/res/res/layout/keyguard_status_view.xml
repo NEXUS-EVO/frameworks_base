@@ -44,7 +44,7 @@
                 android:id="@+id/clock_view"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="@dimen/kg_status_line_font_right_margin"
+                android:layout_marginEnd="10sp"
                 android:layout_gravity="center">
 
                 <TextView android:id="@+id/clock_text"
@@ -52,7 +52,7 @@
                           android:layout_height="wrap_content"
                           android:singleLine="true"
                           android:ellipsize="none"
-                          android:textSize="@dimen/kg_status_clock_font_size"
+                          android:textSize="85sp"
                           android:textAppearance="?android:attr/textAppearanceMedium"
                           android:textColor="#ffffffff"
                           android:drawablePadding="2dip"

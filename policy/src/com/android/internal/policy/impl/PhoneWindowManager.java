@@ -573,8 +573,7 @@ public class PhoneWindowManager implements WindowManagerPolicy {
                     Settings.System.ACCELEROMETER_ROTATION_ANGLES), false, this,
                     UserHandle.USER_ALL);
             resolver.registerContentObserver(Settings.System.getUriFor(
-                    Settings.System.NAVIGATION_BAR_SHOW), false, this);        
-                    Settings.System.NAVIGATION_BAR_SHOW), false, this);
+                    Settings.System.NAVIGATION_BAR_SHOW), false, this);                        
             resolver.registerContentObserver(Settings.System.getUriFor(
                     Settings.System.NAVIGATION_BAR_SHOW_NOW), false, this);
             resolver.registerContentObserver(Settings.System.getUriFor(

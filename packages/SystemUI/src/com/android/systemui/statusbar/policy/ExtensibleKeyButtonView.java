@@ -40,6 +40,8 @@ public class ExtensibleKeyButtonView extends KeyButtonView {
                 setId(R.id.menu);
             } else if (ClickAction.equals(AokpTarget.ACTION_POWER)) {
                 setCode (KeyEvent.KEYCODE_POWER);
+            } else if (ClickAction.equals(AokpTarget.ACTION_SEARCH)) {
+				setCode (KeyEvent.KEYCODE_SEARCH);    
             } else {
                 setOnClickListener(mClickListener);
                 if (ClickAction.equals(AokpTarget.ACTION_RECENTS))

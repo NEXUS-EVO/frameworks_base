@@ -2628,6 +2628,23 @@ public final class Settings {
         /**
          * Use the Notification Power Widget? (Who wouldn't!)
          *
+         * Style of Battery
+         * 0 - Icon Only
+         * 1 - Text Only
+         * 2 - Icon Text
+         * 3 - Icon Centered Text
+         * 4 - Icon Circle
+	     * 5 - Cyanogen Circle
+	     * 6 - Cyanogen Circle with percentage
+         * 7 - Hide
+         */
+        public static final String STATUSBAR_BATTERY_ICON = "statusbar_battery_icon";
+
+	    /**
+         * AM/PM Style for clock options
+         * 0 - Normal AM/PM
+         * 1 - Small AM/PM
+         * 2 - No AM/PM
          * @hide
          */
         public static final String EXPANDED_VIEW_WIDGET = "expanded_view_widget";
@@ -3216,16 +3233,6 @@ public final class Settings {
          */
         public static final String HOME_UNLOCK_SCREEN = "home_unlock_screen";
 
-        /**
-         * Style of Battery
-         * 0 - Icon Only
-         * 1 - Text Only
-         * 2 - Icon Text
-         * 3 - Icon Centered Text
-         * 4 - Icon Circle
-         * 5 - Hide
-         */
-        public static final String STATUSBAR_BATTERY_ICON = "statusbar_battery_icon";
         /**
          * AM/PM Style for clock options
          * 0 - Normal AM/PM

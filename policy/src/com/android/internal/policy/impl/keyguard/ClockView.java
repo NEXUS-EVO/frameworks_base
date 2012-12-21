@@ -41,7 +41,7 @@ import com.android.internal.R;
  * Displays the time
  */
 public class ClockView extends RelativeLayout {
-    private static final String ANDROID_CLOCK_FONT_FILE = "/system/fonts/AndroidClock.ttf";
+    private static final String ANDROID_CLOCK_FONT_FILE = "/system/fonts/RobotoCondensed-Regular.ttf";
     private final static String M12 = "h:mm";
     private final static String M24 = "kk:mm";
 

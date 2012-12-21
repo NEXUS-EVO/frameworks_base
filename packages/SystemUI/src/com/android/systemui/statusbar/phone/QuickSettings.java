@@ -30,10 +30,8 @@ import com.android.systemui.statusbar.policy.BluetoothController;
 import com.android.systemui.statusbar.policy.BrightnessController;
 import com.android.systemui.statusbar.policy.LocationController;
 import com.android.systemui.statusbar.policy.NetworkController;
-import com.android.systemui.statusbar.policy.Prefs;
 import com.android.systemui.statusbar.policy.ToggleSlider;
 
-import android.app.Activity;
 import android.app.ActivityManagerNative;
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -43,6 +41,7 @@ import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.ContentResolver;
 import android.content.Context;
+import android.content.CursorLoader;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
@@ -91,8 +90,13 @@ import android.widget.Toast;
 import com.android.internal.telephony.PhoneConstants;
 import com.android.systemui.aokp.AokpTarget;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.InputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -159,6 +163,9 @@ class QuickSettings {
 
     private static final String DEFAULT_TOGGLES = "default";
 
+    public static final String FAST_CHARGE_DIR = "/sys/kernel/fast_charge";
+    public static final String FAST_CHARGE_FILE = "force_fast_charge";
+
     private int mWifiApState = WifiManager.WIFI_AP_STATE_DISABLED;
 
     private int mDataState = -1;
@@ -205,7 +212,6 @@ class QuickSettings {
     private long tacoSwagger = 0;
     private boolean tacoToggle = false;
     private int mTileTextSize = 12;
-    private String mFastChargePath;
 
     private HashMap<String, Integer> toggleMap;
 
@@ -277,7 +283,6 @@ class QuickSettings {
                 r.getInteger(R.integer.quick_settings_brightness_dialog_long_timeout);
         mBrightnessDialogShortTimeout =
                 r.getInteger(R.integer.quick_settings_brightness_dialog_short_timeout);
-        mFastChargePath = r.getString(com.android.internal.R.string.config_fastChargePath);
 
         IntentFilter filter = new IntentFilter();
         filter.addAction(DisplayManager.ACTION_WIFI_DISPLAY_STATUS_CHANGED);
@@ -845,18 +850,14 @@ class QuickSettings {
                 });
                 break;
             case FCHARGE_TILE:
-                if((mFastChargePath == null || mFastChargePath.isEmpty()) ||
-                        !new File(mFastChargePath).exists()) {
-                    // config not set or config set and kernel doesn't support it?
-                    break;
-                }
                 quick = (QuickSettingsTileView)
                         inflater.inflate(R.layout.quick_settings_tile, parent, false);
                 quick.setContent(R.layout.quick_settings_tile_fcharge, inflater);
                 quick.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        setFastCharge(!Prefs.getLastFastChargeState(mContext));
+                        updateFastCharge(isFastChargeOn() ? false : true);
+                        mModel.refreshFChargeTile();
                     }
                 });
                 quick.setOnLongClickListener(new View.OnLongClickListener() {
@@ -875,7 +876,6 @@ class QuickSettings {
                         tv.setTextSize(1, mTileTextSize);
                     }
                 });
-                restoreFChargeState();
                 break;
             case WIFI_TETHER_TILE:
                 quick = (QuickSettingsTileView)
@@ -1294,10 +1294,7 @@ class QuickSettings {
 
         if (!toggles.get(0).equals("")) {
             for (String toggle : toggles) {
-                View v = getTile(getToggleMap().get(toggle), parent, inflater);
-                if(v != null) {
-                    parent.addView(v);
-                }
+                parent.addView(getTile(getToggleMap().get(toggle), parent, inflater));
             }
         }
     }
@@ -1580,16 +1577,29 @@ class QuickSettings {
         }
     };
 
-    private void setFastCharge(final boolean on) {
-        Intent fastChargeIntent = new Intent("com.aokp.romcontrol.ACTION_CHANGE_FCHARGE_STATE");
-        fastChargeIntent.setPackage("com.aokp.romcontrol");
-        fastChargeIntent.putExtra("newState", on);
-        mContext.sendBroadcast(fastChargeIntent);
-        mHandler.postDelayed(new Runnable() {
-            public void run() {
-                mModel.refreshFChargeTile();
-            }
-        }, 250);
+    public boolean isFastChargeOn() {
+        try {
+            File fastcharge = new File(FAST_CHARGE_DIR, FAST_CHARGE_FILE);
+            FileReader reader = new FileReader(fastcharge);
+            BufferedReader breader = new BufferedReader(reader);
+            return (breader.readLine().equals("1"));
+        } catch (IOException e) {
+            Log.e("FChargeToggle", "Couldn't read fast_charge file");
+            return false;
+        }
+    }
+
+    public void updateFastCharge(boolean on) {
+        try {
+            File fastcharge = new File(FAST_CHARGE_DIR, FAST_CHARGE_FILE);
+            FileWriter fwriter = new FileWriter(fastcharge);
+            BufferedWriter bwriter = new BufferedWriter(fwriter);
+            bwriter.write(on ? "1" : "0");
+            bwriter.close();
+        } catch (IOException e) {
+            Log.e("FChargeToggle", "Couldn't write fast_charge file");
+        }
+
     }
 
     private void changeWifiState(final boolean desiredState) {
@@ -1635,18 +1645,6 @@ class QuickSettings {
             mModel.refreshTorchTile();
         }
     };
-
-    private void restoreFChargeState() {
-        new AsyncTask<Void, Void, Boolean>() {
-            @Override
-            protected Boolean doInBackground(Void... params) {
-                if(Prefs.getLastFastChargeState(mContext) && !mModel.isFastChargeOn()) {
-                    setFastCharge(true);
-                }
-                return null;
-            }
-        }.execute();
-    }
 
     void updateTileTextSize(int colnum) {
         // adjust Tile Text Size based on column count

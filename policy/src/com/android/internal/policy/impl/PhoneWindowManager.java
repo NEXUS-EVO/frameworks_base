@@ -368,6 +368,10 @@ public class PhoneWindowManager implements WindowManagerPolicy {
     boolean mVolBtnMusicControls;
     boolean mIsLongPress;
 
+    // Power button torch
+    boolean mPowerButtonTorch;
+    boolean mTorchOn;
+
     private static final class PointerLocationInputEventReceiver extends InputEventReceiver {
         private final PointerLocationView mView;
 
@@ -644,7 +648,8 @@ public class PhoneWindowManager implements WindowManagerPolicy {
                     Settings.System.HARDWARE_KEY_REBINDING), false, this);
             resolver.registerContentObserver(Settings.System.getUriFor(
                     Settings.System.STATUSBAR_STATE), false, this);        
-
+            resolver.registerContentObserver(Settings.System.getUriFor(
+                    Settings.System.POWER_BUTTON_TORCH), false, this);
             updateSettings();
         }
 
@@ -943,6 +948,22 @@ public class PhoneWindowManager implements WindowManagerPolicy {
             }
         }
     };
+
+    private final Runnable mTorchLongPress = new Runnable() {
+        @Override
+        public void run() {
+            toggleTorch(true); // on
+        }
+    };
+
+    void toggleTorch(boolean on) {
+            Intent intent = new Intent("android.intent.action.MAIN");
+            intent.setComponent(ComponentName.unflattenFromString("com.aokp.Torch/.TorchActivity"));
+            intent.addCategory("android.intent.category.LAUNCHER");
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            mContext.startActivity(intent);
+            mTorchOn = on;
+    }
 
     void showGlobalActionsDialog() {
         if (mGlobalActions == null) {
@@ -1440,6 +1461,9 @@ public class PhoneWindowManager implements WindowManagerPolicy {
                             Settings.System.KEY_APP_SWITCH_LONG_PRESS_ACTION, KEY_ACTION_NOTHING);
                 }
             }
+
+            mPowerButtonTorch = (Settings.System.getIntForUser(resolver,
+                    Settings.System.POWER_BUTTON_TORCH, 0, UserHandle.USER_CURRENT) == 1);
 
             // Configure rotation lock.
             int userRotation = Settings.System.getIntForUser(resolver,
@@ -3808,6 +3832,7 @@ public class PhoneWindowManager implements WindowManagerPolicy {
         }
 
         final boolean down = event.getAction() == KeyEvent.ACTION_DOWN;
+        final boolean up = event.getAction() == KeyEvent.ACTION_UP;
         final boolean canceled = event.isCanceled();
         int keyCode = event.getKeyCode();
 
@@ -3856,7 +3881,8 @@ public class PhoneWindowManager implements WindowManagerPolicy {
             // When the screen is off and the key is not injected, determine whether
             // to wake the device but don't pass the key to the application.
             result = 0;
-            if (down && isWakeKey && isWakeKeyWhenScreenOff(keyCode)) {
+            if (((down && !mPowerButtonTorch) || (up && !mTorchOn && mPowerButtonTorch))
+                    && isWakeKey && isWakeKeyWhenScreenOff(keyCode)) {
                 if (keyguardActive) {
                     // If the keyguard is showing, let it wake the device when ready.
                     mKeyguardMediator.onWakeKeyWhenKeyguardShowingTq(keyCode);
@@ -3992,6 +4018,22 @@ public class PhoneWindowManager implements WindowManagerPolicy {
             }
 
             case KeyEvent.KEYCODE_POWER: {
+                // handle power key long-press
+                if (mPowerButtonTorch && !isScreenOn) {
+                    if (down && !mTorchOn) {
+                        mHandler.postDelayed(mTorchLongPress, 1000);
+                        return 0;
+                    }
+
+                    if (up) {
+                        mHandler.removeCallbacks(mTorchLongPress);
+                        if (mTorchOn) {
+                            toggleTorch(false); // off
+                            return 0;
+                        }
+                    }
+                }
+
                 result &= ~ACTION_PASS_TO_USER;
                 if (down) {
                     if (isScreenOn && !mPowerKeyTriggered

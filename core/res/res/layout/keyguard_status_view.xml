@@ -44,7 +44,7 @@
                 android:id="@+id/clock_view"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="10sp"
+                android:layout_marginEnd="0sp"
                 android:layout_gravity="center">
 
                 <TextView android:id="@+id/clock_text"

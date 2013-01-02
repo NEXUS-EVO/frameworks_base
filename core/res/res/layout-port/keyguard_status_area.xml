@@ -40,7 +40,6 @@
             android:singleLine="true"
             android:ellipsize="marquee"
             android:textAppearance="?android:attr/textAppearanceMedium"
-            android:textSize="@dimen/kg_status_date_font_size"
             />
 
         <TextView
@@ -51,7 +50,7 @@
             android:singleLine="true"
             android:ellipsize="marquee"
             android:textAppearance="?android:attr/textAppearance"
-            android:textSize="@dimen/kg_status_line_font_size"
+            android:layout_marginLeft="4.0dip"
             android:drawablePadding="4dip"
             />
     </LinearLayout>

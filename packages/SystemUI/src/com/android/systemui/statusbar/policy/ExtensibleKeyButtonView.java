@@ -28,7 +28,7 @@ public class ExtensibleKeyButtonView extends KeyButtonView {
 
     public void setAokpTarget(AokpTarget targ){
         mAokpTarget = targ;
-        }
+    }
 
     public void setActions(String ClickAction, String Longpress) {
         mClickAction = ClickAction;
@@ -45,7 +45,7 @@ public class ExtensibleKeyButtonView extends KeyButtonView {
                 setId(R.id.menu);
             } else if (ClickAction.equals(AokpTarget.ACTION_POWER)) {
                 setCode(KeyEvent.KEYCODE_POWER);
-            } else if (ClickAction.equals(AokpTarget.ACTION_SEARCH)) {    
+            } else if (ClickAction.equals(AokpTarget.ACTION_SEARCH)) {
                 setCode(KeyEvent.KEYCODE_SEARCH);
             } else if (ClickAction.equals(AokpTarget.ACTION_RECENTS)) {
                 setId(R.id.recent_apps);
@@ -66,38 +66,23 @@ public class ExtensibleKeyButtonView extends KeyButtonView {
         }
     }
 
-    protected void preloadRecentTasksList() {
-        Intent intent = new Intent(RecentsActivity.PRELOAD_INTENT);
-        intent.setClassName("com.android.systemui",
-                "com.android.systemui.recent.RecentsPreloadReceiver");
-        mContext.sendBroadcastAsUser(intent, new UserHandle(UserHandle.USER_CURRENT));
-
-        RecentTasksLoader.getInstance(mContext).preloadFirstTask();
-    }
-
-    protected void cancelPreloadingRecentTasksList() {
-        Intent intent = new Intent(RecentsActivity.CANCEL_PRELOAD_INTENT);
-        intent.setClassName("com.android.systemui",
-                "com.android.systemui.recent.RecentsPreloadReceiver");
-        mContext.sendBroadcastAsUser(intent, new UserHandle(UserHandle.USER_CURRENT));
-
-        RecentTasksLoader.getInstance(mContext).cancelPreloadingFirstTask();
-    }
-
+    /*
+     * The default implementation preloads the first task and then sends an
+     * intent to preload the rest of them; let's just preload the first task on
+     * touch down and get out. It also cancels the first task preload if
+     * ACTION_UP and the button isn't pressed, but there is a rare case where
+     * the user spams the recents button, and this could result in unwanted
+     * behavior
+     */
     protected View.OnTouchListener mRecentsPreloadOnTouchListener = new View.OnTouchListener() {
-        // additional optimization when we have software system buttons - start loading the recent
-        // tasks on touch down
         @Override
         public boolean onTouch(View v, MotionEvent event) {
-            int action = event.getAction() & MotionEvent.ACTION_MASK;
-            if (action == MotionEvent.ACTION_DOWN) {
-                preloadRecentTasksList();
-            } else if (action == MotionEvent.ACTION_CANCEL) {
-                cancelPreloadingRecentTasksList();
-            } else if (action == MotionEvent.ACTION_UP) {
-                if (!v.isPressed()) {
-                    cancelPreloadingRecentTasksList();
-                }
+            switch(event.getAction() & MotionEvent.ACTION_MASK) {
+                case MotionEvent.ACTION_DOWN:
+                    RecentTasksLoader.getInstance(mContext).preloadFirstTask();
+                    Intent i = new Intent(RecentsActivity.PRELOAD_INTENT);
+                    mContext.sendBroadcastAsUser(i, UserHandle.CURRENT);
+                    break;
 
             }
             return false;
